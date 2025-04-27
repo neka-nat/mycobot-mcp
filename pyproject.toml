@@ -1,0 +1,28 @@
+[project]
+name = "mycobot-mcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "neka-nat", email = "nekanat.stock@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "dds-cloudapi-sdk>=0.4.1",
+    "kinpy>=0.4.2",
+    "loguru>=0.7.3",
+    "mcp[cli]>=1.6.0",
+    "opencv-python>=4.11.0.86",
+    "pydantic>=2.11.3",
+    "pymycobot>=3.9.7",
+    "supervision>=0.25.1",
+]
+
+
+[project.scripts]
+mycobot-mcp = "mycobot_mcp.server:main"
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

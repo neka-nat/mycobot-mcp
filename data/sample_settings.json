@@ -1,0 +1,35 @@
+{
+    "camera_id": 0,
+    "pixel_size_on_capture_position": 0.00043,
+    "mycobot_settings": {
+        "urdf_path": "data/mycobot/mycobot.urdf",
+        "end_effector_name": "camera_flange",
+        "port": "/dev/ttyACM0",
+        "baud": 115200,
+        "default_speed": 40,
+        "default_z_speed": 20,
+        "suction_pin": 5,
+        "command_timeout": 5,
+        "use_gravity_compensation": false,
+        "end_effector_height": 0.065,
+        "object_height": 0.01,
+        "release_height": 0.05,
+        "places": [
+            {
+                "name": "home",
+                "description": "Home position",
+                "position": [0, 20, -130, 20, 0, 0]
+            },
+            {
+                "name": "capture",
+                "description": "Camera capture position",
+                "position": [0, 0, -30, -60, 0, -45]
+            },
+            {
+                "name": "drop",
+                "description": "Position to drop object",
+                "position": [-45, 20, -130, 20, 0, 0]
+            }
+        ]
+    }
+}
