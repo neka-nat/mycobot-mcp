@@ -10,9 +10,11 @@ This MCP can send simple pick-and-place instructions to myCobot.
 > This MCP server requires image feedback.
 > Please connect an MCP client that can handle image feedback.
 
-## Chat
+## Chat example
 
 ![chat](assets/chat_screenshot.png)
+
+https://github.com/user-attachments/assets/e2c222b8-1ce2-4fb1-8b59-11ec5e973432
 
 ## Setup
 
