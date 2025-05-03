@@ -96,7 +96,7 @@ The sample is [here](https://github.com/neka-nat/mycobot-mcp/blob/master/data/sa
 ```json
 {
     "camera_id": 0,
-    "pixel_size_on_capture_position": 0.00043,
+    "camera_parameter_path": "/path/to/camera_calibration/mtx_dist.npy",
     "mycobot_settings": {
         "urdf_path": "/path/to/mycobot.urdf",
         "end_effector_name": "camera_flange",
