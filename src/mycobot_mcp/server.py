@@ -100,8 +100,22 @@ def capture_and_detect(ctx: Context, object_lists: list[str]) -> list[TextConten
         return result
     get_detection_result_history().append(result)
     image_base64, mime_type = _ndarray_to_base64(result.annotated_image)
+    detected_coords = robot_operator.detection_to_coords(result.detections)
     return [
-        TextContent(type="text", text=str(robot_operator.detection_to_coords(result.detections))),
+        TextContent(
+            type="text",
+            text=str(
+                [
+                    {
+                        "object_no": i,
+                        "category": detection.category,
+                        "score": detection.score,
+                        "coords": detected_coords[i],
+                    }
+                    for i, detection in enumerate(result.detections)
+                ]
+            ),
+        ),
         ImageContent(type="image", data=image_base64, mimeType=mime_type),
     ]
 
@@ -114,12 +128,22 @@ def run(ctx: Context, code: list[OperationCode]) -> list[TextContent | ImageCont
         code (list[OperationCode]): The list of operation codes to run
 
     Example:
-        You want the robot to grab a No.0 object, then move it to the drop place.
+        You want the robot to grab a No.0 object, then move it to the drop place defined in the robot settings.
         ```json
         [
             {"action": "move_to_object", "object_no": 0},
             {"action": "grab"},
             {"action": "move_to_place", "place_name": "drop"},
+            {"action": "release"},
+        ]
+        ```
+
+        You want the robot to grab a No.0 object, then drop it to the No.1 object(storage or other place).
+        ```json
+        [
+            {"action": "move_to_object", "object_no": 0},
+            {"action": "grab"},
+            {"action": "move_to_object", "object_no": 1},
             {"action": "release"},
         ]
         ```

@@ -1,4 +1,5 @@
 import os
+from functools import cached_property
 
 import cv2
 import numpy as np
@@ -22,9 +23,16 @@ class DetectionResult(BaseModel):
     mask: Mask
     score: float
 
-    @property
+    @cached_property
+    def mask_array(self) -> np.ndarray:
+        return rle_to_array(
+            self.mask.counts, self.mask.size[0] * self.mask.size[1]
+        ).reshape(self.mask.size)
+
+    @cached_property
     def center(self) -> tuple[float, float]:
-        return (self.bbox[0] + self.bbox[2]) / 2, (self.bbox[1] + self.bbox[3]) / 2
+        center = np.mean(np.argwhere(self.mask_array.astype(bool)), axis=0)
+        return (center[1], center[0])
 
 
 class ObjectDetection:
@@ -73,12 +81,7 @@ class ObjectDetection:
 
         for obj in objects:
             boxes.append(obj.bbox)
-            masks.append(
-                rle_to_array(
-                    obj.mask.counts,
-                    obj.mask.size[0] * obj.mask.size[1]
-                ).reshape(obj.mask.size)
-            )
+            masks.append(obj.mask_array)
             confidences.append(obj.score)
             cls_name = obj.category.lower().strip()
             class_names.append(cls_name)
