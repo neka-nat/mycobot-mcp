@@ -113,11 +113,11 @@ def run(ctx: Context, code: list[OperationCode]) -> list[TextContent | ImageCont
     Args:
         code (list[OperationCode]): The list of operation codes to run
 
-    Expects:
-        You want the robot to grab a No.1 object, then move it to the drop place.
+    Example:
+        You want the robot to grab a No.0 object, then move it to the drop place.
         ```json
         [
-            {"action": "move_to_object", "object_no": 1},
+            {"action": "move_to_object", "object_no": 0},
             {"action": "grab"},
             {"action": "move_to_place", "place_name": "drop"},
             {"action": "release"},
