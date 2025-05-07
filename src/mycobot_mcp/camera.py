@@ -1,6 +1,7 @@
 import numpy as np
 from pydantic import BaseModel, ConfigDict
 
+
 class FlatPixelToWorld(BaseModel):
     matrix: np.ndarray
     distortion: np.ndarray
@@ -22,3 +23,8 @@ class FlatPixelToWorld(BaseModel):
         x = dx_pix * height / self.matrix[0, 0]
         y = dy_pix * height / self.matrix[1, 1]
         return (float(x), float(y))
+
+    def xy_to_uv(self, x: float, y: float, height: float) -> tuple[float, float]:
+        u = (x * self.matrix[0, 0] / height) * self.flip_x + self.matrix[0, 2]
+        v = (y * self.matrix[1, 1] / height) * self.flip_y + self.matrix[1, 2]
+        return (float(u), float(v))

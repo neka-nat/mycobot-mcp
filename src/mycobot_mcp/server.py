@@ -121,8 +121,17 @@ def capture_and_detect(ctx: Context, object_lists: list[str]) -> list[TextConten
 
 
 @mcp.tool()
+def capture_with_grid(ctx: Context) -> ImageContent:
+    """Capture a camera image with a grid"""
+    robot_operator = get_robot_operator()
+    image = robot_operator.capture_with_grid()
+    image_base64, mime_type = _ndarray_to_base64(image)
+    return ImageContent(type="image", data=image_base64, mimeType=mime_type)
+
+
+@mcp.tool()
 def run(ctx: Context, code: list[OperationCode]) -> list[TextContent | ImageContent]:
-    """Run the robot operator
+    """Run the robot operator with the given operation codes
 
     Args:
         code (list[OperationCode]): The list of operation codes to run
@@ -161,15 +170,21 @@ def run(ctx: Context, code: list[OperationCode]) -> list[TextContent | ImageCont
 
 @mcp.prompt()
 def code_generation_strategy() -> str:
-    return """You are a smart robot operator.
-You are given a list of object detections.
-You need to generate a list of operation codes to move the robot to grab the object and move it to the drop place.
+    return """You are a skilled robot arm operator.
+The robot arm is equipped with a camera.
+The camera is mounted at the tip of the arm and is facing the floor.
+Following given instructions, you can operate the robot arm to pick up, release, or move objects.
 
-1. First, get the robot settings. (get_robot_settings)
-2. Next, get the camera image. (capture)
-3. Analyze the captured image and create a list of objects to detect, and perform object detection. (capture_and_detect)
-4. Based on the information of the detected objects, generate a list of operation codes to move the robot to grab the object and move it to the drop place.
-5. Execute the generated operation codes. (run)
+1. First, retrieve the robot's settings. (`get_robot_settings`)
+2. Next, capture an image from the camera. (`capture`)
+3. Analyze the camera image to determine which object to detect. (`capture_and_detect`, `capture_with_grid`)
+   * `capture_with_grid` captures an image from the camera and overlays a grid on the image.
+   * `capture_and_detect` captures an image from the camera and overlays detected objects on the image.
+4. Based on the information of the detected objects, generate operation code to allow the robot arm to pick up, release, or move the objects. (`run`)
+   * If the target position for the robot arm is an object, use `move_to_object` and specify the object number.
+   * If the target position is a predefined place, use `move_to_place` and specify the place name.
+   * If the target position is a coordinate on the camera grid, use `move_to_xy_on_capture_coord` and specify the coordinate on the camera grid.
+   In this case, the current position of the robot arm corresponds to the center of the camera image.
 """
 
 

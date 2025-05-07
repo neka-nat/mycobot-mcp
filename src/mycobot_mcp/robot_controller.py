@@ -78,6 +78,12 @@ class MyCobotController:
         )
         return [f"move_to_coords({coords}, {speed})"]
 
+    def move_to_xy_on_capture_coord(self, x: float, y: float, speed: Optional[float] = None) -> list[str]:
+        logger.info("[MyCobotController] Move to xy on Capture Coord")
+        world_coords = np.array([x, y]) + self.capture_coord.pos[:2]
+        self.move_to_xy(world_coords[0], world_coords[1], speed)
+        return [f"move_to_xy_on_capture_coord({x}, {y}, {speed})"]
+
     def move_to_object(self, object_no: int, speed: Optional[float] = None) -> list[str]:
         logger.info("[MyCobotController] Move to Object No. {}".format(object_no))
         detection = (
