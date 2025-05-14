@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/neka-nat-mycobot-mcp-badge.png)](https://mseep.ai/app/neka-nat-mycobot-mcp)
+
 # myCobot MCP
 
 ## Overview
